@@ -1,0 +1,24 @@
+{
+    "translations": {
+        "moodle_hunger_level_0": "Tok",
+        "moodle_hunger_level_1": "Acıkmış",
+        "moodle_hunger_level_2": "Aç",
+        "moodle_hunger_level_3": "Çok Aç",
+        "moodle_hunger_level_4": "Açlıktan Ölüyor",
+        "moodle_hunger_desc_level_0": "Toksun.",
+        "moodle_hunger_desc_level_1": "Biraz aç hissediyorsun.",
+        "moodle_hunger_desc_level_2": "Miden gurulduyor.",
+        "moodle_hunger_desc_level_3": "İyice acıkmaya başladın.",
+        "moodle_hunger_desc_level_4": "Açlığın eşiğindesin...",
+        "moodle_thirst_level_0": "Susamadı",
+        "moodle_thirst_level_1": "Susamış",
+        "moodle_thirst_level_2": "Susuz",
+        "moodle_thirst_level_3": "Çok Susuz",
+        "moodle_thirst_level_4": "Susuzluktan Ölüyor",
+        "moodle_thirst_desc_level_0": "Az önce içtin.",
+        "moodle_thirst_desc_level_1": "Biraz susamış hissediyorsun.",
+        "moodle_thirst_desc_level_2": "Susadın ve bir içeceğe ihtiyacın var.",
+        "moodle_thirst_desc_level_3": "Susuz kaldın ve acilen suya ihtiyacın var.",
+        "moodle_thirst_desc_level_4": "Susuzluktan ölüyorsun, hemen su bul!"
+    }
+}

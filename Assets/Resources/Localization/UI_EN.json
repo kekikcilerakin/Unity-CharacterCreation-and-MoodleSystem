@@ -1,0 +1,24 @@
+{
+    "translations": {
+        "moodle_hunger_level_0": "Satiated",
+        "moodle_hunger_level_1": "Peckish",
+        "moodle_hunger_level_2": "Hungry",
+        "moodle_hunger_level_3": "Very Hungry",
+        "moodle_hunger_level_4": "Starving",
+        "moodle_hunger_desc_level_0": "You are full.",
+        "moodle_hunger_desc_level_1": "Feeling a little bit hungry.",
+        "moodle_hunger_desc_level_2": "Your stomach is grumbling.",
+        "moodle_hunger_desc_level_3": "You're quite hungry now.",
+        "moodle_hunger_desc_level_4": "You're on the verge of starvation...",
+        "moodle_thirst_level_0": "Satiated",
+        "moodle_thirst_level_1": "Slightly Thirsty",
+        "moodle_thirst_level_2": "Thirsty",
+        "moodle_thirst_level_3": "Parched",
+        "moodle_thirst_level_4": "Dying of Thirst",
+        "moodle_thirst_desc_level_0": "You've just drunk.",
+        "moodle_thirst_desc_level_1": "Feeling slightly thirsty.",
+        "moodle_thirst_desc_level_2": "You're thirsty and need a drink.",
+        "moodle_thirst_desc_level_3": "You're parched and urgently need water.",
+        "moodle_thirst_desc_level_4": "You're dying of thirst, find water immediately!"
+    }
+}
