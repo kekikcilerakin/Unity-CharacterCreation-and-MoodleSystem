@@ -29,7 +29,6 @@ public class MoodleUI : MonoBehaviour
         {
             ShowMoodle();
 
-            Debug.Log(moodleLevel);
             moodleBackground.sprite = MoodleUIDatabase.Instance.GetBackground(moodleLevel);
             moodleIcon.sprite = Moodle.GetIcon(moodle.GetMoodleType());
         }
