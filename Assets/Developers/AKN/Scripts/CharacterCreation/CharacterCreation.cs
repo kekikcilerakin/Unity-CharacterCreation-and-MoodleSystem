@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class CharacterCreation : MonoBehaviour
 {
@@ -30,7 +31,7 @@ public class CharacterCreation : MonoBehaviour
     [SerializeField] private Image bodyImage;
     [SerializeField] private Image hairImage;
     [SerializeField] private Image beardImage;
-    [SerializeField] private Image genderImage;
+    [SerializeField] private Image genderIcon;
 
     [SerializeField] private TMP_Dropdown hairTypeDropdown;
     [SerializeField] private TMP_Dropdown hairColorDropdown;
@@ -138,22 +139,17 @@ public class CharacterCreation : MonoBehaviour
         {
             headImage.sprite = maleHead;
             bodyImage.sprite = maleBody;
-
-            hairImage.sprite = hairs[0];
-            beardImage.sprite = beards[0];
-
-            genderImage.sprite = maleGenderIcon;
+            genderIcon.sprite = maleGenderIcon;
         }
         else
         {
             headImage.sprite = femaleHead;
             bodyImage.sprite = femaleBody;
-
-            hairImage.sprite = hairs[0];
-            beardImage.sprite = beards[0];
-
-            genderImage.sprite = femaleGenderIcon;
+            genderIcon.sprite = femaleGenderIcon;
         }
+
+        hairImage.sprite = hairs[0];
+        beardImage.sprite = beards[0];
 
         headImage.color = skinColors[0];
         bodyImage.color = skinColors[0];
@@ -173,19 +169,7 @@ public class CharacterCreation : MonoBehaviour
 
     private void PopulateHairTypeDropdown()
     {
-        hairTypeDropdown.ClearOptions();
-
-        List<TMP_Dropdown.OptionData> dropdownOptions = new List<TMP_Dropdown.OptionData>();
-
-        foreach (Sprite hairSprite in hairs)
-        {
-            TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData(hairSprite.name.Replace("Hair_", "").Replace("_Down", ""));
-            dropdownOptions.Add(option);
-        }
-
-        hairTypeDropdown.AddOptions(dropdownOptions);
-
-        hairImage.sprite = hairs[0];
+        PopulateDropdownOptions(hairTypeDropdown, hairs);
     }
 
     public void OnHairTypeDropdownValueChanged()
@@ -220,19 +204,24 @@ public class CharacterCreation : MonoBehaviour
 
     private void PopulateBeardTypeDropdown()
     {
-        beardTypeDropdown.ClearOptions();
+        PopulateDropdownOptions(beardTypeDropdown, beards);
+    }
 
-        List<TMP_Dropdown.OptionData> dropdownOptions = new List<TMP_Dropdown.OptionData>();
+    private void PopulateDropdownOptions(TMP_Dropdown dropdown, Sprite[] sprites)
+    {
+        dropdown.ClearOptions();
 
-        foreach (Sprite beardSprite in beards)
+        List<string> dropdownOptions = new List<string>();
+
+        foreach (Sprite sprite in sprites)
         {
-            TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData(beardSprite.name.Replace("Beard_", ""));
-            dropdownOptions.Add(option);
+            string spriteName = sprite.name;
+            spriteName = spriteName.Replace("Hair_", "").Replace("Beard_", "").Replace("_Down", "");
+            dropdownOptions.Add(spriteName);
         }
 
-        beardTypeDropdown.AddOptions(dropdownOptions);
-
-        beardImage.sprite = beards[0];
+        dropdown.AddOptions(dropdownOptions);
+        dropdown.value = 0;
     }
 
     public void OnBeardTypeDropdownValueChanged()
