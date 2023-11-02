@@ -66,7 +66,6 @@ public class CharacterCreation : MonoBehaviour
         hairColors = predefinedHairColors;
 
         ResetVisuals();
-
         PopulateDropdowns();
     }
 
@@ -166,7 +165,7 @@ public class CharacterCreation : MonoBehaviour
 
         foreach (Sprite hairSprite in hairs)
         {
-            TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData(hairSprite.name.Replace("Hair_", ""));
+            TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData(hairSprite.name.Replace("Hair_", "").Replace("_Down", ""));
             dropdownOptions.Add(option);
         }
 
@@ -288,5 +287,23 @@ public class CharacterCreation : MonoBehaviour
         Rect rect = new Rect(0, 0, 1, 1);
 
         return Sprite.Create(texture, rect, Vector2.one * 0.5f);
+    }
+
+    public void ConfirmCharacter()
+    {
+        PlayerSpriteManager spriteManager = PlayerController.Instance.PlayerSpriteManager;
+
+        spriteManager.SetHeadSprite(headImage.sprite, headImage.color);
+        spriteManager.SetBodySprite(bodyImage.sprite, bodyImage.color);
+        spriteManager.SetHairSprite(hairImage.sprite, hairImage.color);
+        spriteManager.SetBeardSprite(beardImage.sprite, beardImage.color);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ConfirmCharacter();
+        }
     }
 }

@@ -1,121 +1,159 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
+
+public enum FacingDirection
+{
+    Up,
+    Right,
+    Down,
+    Left
+}
 
 public class PlayerSpriteManager : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private Sprite upSprite;
-    [SerializeField] private Sprite rightSprite;
-    [SerializeField] private Sprite downSprite;
-    [SerializeField] private Sprite leftSprite;
+    [SerializeField] private SpriteRenderer headSpriteRenderer;
+    [SerializeField] private SpriteRenderer bodySpriteRenderer;
+    [SerializeField] private SpriteRenderer hairSpriteRenderer;
+    [SerializeField] private SpriteRenderer beardSpriteRenderer;
 
-    private Vector2 lastMoveDirection;
+    private Sprite headSprite;
+    private Sprite bodySprite;
+    private Sprite hairSprite;
+    private Sprite beardSprite;
+
+    private string currentHeadSpriteName;
+    private string currentBodySpriteName;
+    private string currentHairSpriteName;
+    private string currentBeardSpriteName;
+
+    private FacingDirection lastDirection;
+    private Vector2 currentMoveDirection;
+
+    private void Start()
+    {
+        lastDirection = FacingDirection.Down;
+    }
 
     private void Update()
     {
         Vector2 moveDirection = PlayerController.Instance.PlayerInput.GetMovementInput();
-        UpdatePlayerSpriteWithKeyboard(moveDirection);
 
-        // Check if the right mouse button is being held down
+        if (moveDirection != Vector2.zero)
+        {
+            currentMoveDirection = moveDirection;
+            lastDirection = GetFacingDirection(currentMoveDirection);
+        }
 
+        HandleMouseDirection();
+
+        UpdateSprites();
+
+    }
+
+    private void HandleMouseDirection()
+    {
+        // Check if the right mouse button is held down
         if (Input.GetMouseButton(1))
         {
-            UpdatePlayerSpriteWithMouse();
+            // Get the mouse position in world coordinates
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition.z = 0; // Set the z-component to zero
+
+            // Calculate the direction from the player to the mouse
+            Vector2 directionToMouse = (Vector2)(mousePosition - transform.position);
+
+            // Update the lastDirection based on the mouse direction
+            lastDirection = GetFacingDirection(directionToMouse);
         }
     }
 
-    public void UpdatePlayerSpriteWithKeyboard(Vector2 moveDirection)
+    private void UpdateSprites()
     {
-        Vector2 newDirection = GetDirectionFromInput(moveDirection);
-        spriteRenderer.sprite = GetSpriteFromDirection(newDirection);
-        lastMoveDirection = newDirection;
-    }
+        if (bodySprite == null) return;
 
-    private Vector2 GetDirectionFromInput(Vector2 input)
-    {
-        float absHorizontal = Mathf.Abs(input.x);
-        float absVertical = Mathf.Abs(input.y);
+        string newHeadSpriteName = $"{headSprite.name.Replace("_Down", "")}_{lastDirection}";
+        string newBodySpriteName = $"{bodySprite.name.Replace("_Down", "")}_{lastDirection}";
+        string newHairSpriteName = $"{hairSprite.name.Replace("_Down", "")}_{lastDirection}";
+        string newBeardSpriteName = $"{beardSprite.name.Replace("_Down", "")}_{lastDirection}";
 
-        if (absHorizontal > absVertical)
+        if (newHeadSpriteName != currentHeadSpriteName ||
+            newBodySpriteName != currentBodySpriteName ||
+            newHairSpriteName != currentHairSpriteName ||
+            newBeardSpriteName != currentBeardSpriteName)
         {
-            return new Vector2(Mathf.Sign(input.x), 0);
-        }
-        else if (absVertical > absHorizontal)
-        {
-            return new Vector2(0, Mathf.Sign(input.y));
-        }
-        return lastMoveDirection;
-    }
+            // Only update when there's a change in the sprite names
+            currentHeadSpriteName = newHeadSpriteName;
+            currentBodySpriteName = newBodySpriteName;
+            currentHairSpriteName = newHairSpriteName;
+            currentBeardSpriteName = newBeardSpriteName;
 
-    private Sprite GetSpriteFromDirection(Vector2 direction)
-    {
-        if (direction == Vector2.right) return rightSprite;
-        if (direction == Vector2.left) return leftSprite;
-        if (direction == Vector2.up) return upSprite;
-        if (direction == Vector2.down) return downSprite;
+            headSpriteRenderer.sprite = Resources.Load<Sprite>("CharacterCreation/Heads/" + currentHeadSpriteName);
+            bodySpriteRenderer.sprite = Resources.Load<Sprite>("CharacterCreation/Bodies/" + currentBodySpriteName);
+            hairSpriteRenderer.sprite = Resources.Load<Sprite>("CharacterCreation/Hairs/" + currentHairSpriteName);
+            beardSpriteRenderer.sprite = Resources.Load<Sprite>("CharacterCreation/Beards/" + currentBeardSpriteName);
 
-        return downSprite; // Default to down sprite if no match
-    }
-
-    private int GetDirectionFromMouse(Vector3 mousePosition)
-    {
-        Vector2 playerToMouse = (mousePosition - transform.position).normalized;
-
-        if (Mathf.Abs(playerToMouse.x) > Mathf.Abs(playerToMouse.y))
-        {
-            if (playerToMouse.x > 0)
+            if (lastDirection == FacingDirection.Left)
             {
-                return 1; // Right
+                string rightHeadSpriteName = $"{headSprite.name.Replace("_Down", "")}_Right";
+                string rightBodySpriteName = $"{bodySprite.name.Replace("_Down", "")}_Right";
+                string rightHairSpriteName = $"{hairSprite.name.Replace("_Down", "")}_Right";
+                string rightBeardSpriteName = $"{beardSprite.name.Replace("_Down", "")}_Right";
+
+                headSpriteRenderer.sprite = Resources.Load<Sprite>("CharacterCreation/Heads/" + rightHeadSpriteName);
+                bodySpriteRenderer.sprite = Resources.Load<Sprite>("CharacterCreation/Bodies/" + rightBodySpriteName);
+                hairSpriteRenderer.sprite = Resources.Load<Sprite>("CharacterCreation/Hairs/" + rightHairSpriteName);
+                beardSpriteRenderer.sprite = Resources.Load<Sprite>("CharacterCreation/Beards/" + rightBeardSpriteName);
+
+                headSpriteRenderer.flipX = true;
+                bodySpriteRenderer.flipX = true;
+                hairSpriteRenderer.flipX = true;
+                beardSpriteRenderer.flipX = true;
             }
             else
             {
-                return 3; // Left
+                headSpriteRenderer.flipX = false;
+                bodySpriteRenderer.flipX = false;
+                hairSpriteRenderer.flipX = false;
+                beardSpriteRenderer.flipX = false;
             }
         }
+    }
+
+    public FacingDirection GetFacingDirection(Vector2 moveDirection)
+    {
+        float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+
+        if (angle > -45 && angle <= 45)
+            return FacingDirection.Right;
+        else if (angle > 45 && angle <= 135)
+            return FacingDirection.Up;
+        else if (angle > 135 || angle <= -135)
+            return FacingDirection.Left;
         else
-        {
-            if (playerToMouse.y > 0)
-            {
-                return 0; // Up
-            }
-            else
-            {
-                return 2; // Down
-            }
-        }
+            return FacingDirection.Down;
     }
 
-    private void UpdatePlayerSpriteWithMouse()
+    public void SetHeadSprite(Sprite sprite, Color32 color)
     {
-        // Get the mouse position in world coordinates
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        // Get the direction as an integer
-        int direction = GetDirectionFromMouse(mousePosition);
-
-        // Update the sprite based on the direction
-        switch (direction)
-        {
-            case 0:
-                spriteRenderer.sprite = upSprite;
-                lastMoveDirection = Vector2.up;
-                break;
-            case 1:
-                spriteRenderer.sprite = rightSprite;
-                lastMoveDirection = Vector2.right;
-                break;
-            case 2:
-                spriteRenderer.sprite = downSprite;
-                lastMoveDirection = Vector2.down;
-                break;
-            case 3:
-                spriteRenderer.sprite = leftSprite;
-                lastMoveDirection = Vector2.left;
-                break;
-            default:
-                spriteRenderer.sprite = downSprite; // Default to down sprite
-                break;
-        }
+        headSprite = sprite;
+        headSpriteRenderer.sprite = sprite;
+        headSpriteRenderer.color = color;
     }
-
+    public void SetBodySprite(Sprite sprite, Color32 color)
+    {
+        bodySprite = sprite;
+        bodySpriteRenderer.sprite = sprite;
+        bodySpriteRenderer.color = color;
+    }
+    public void SetHairSprite(Sprite sprite, Color32 color)
+    {
+        hairSprite = sprite;
+        hairSpriteRenderer.sprite = sprite;
+        hairSpriteRenderer.color = color;
+    }
+    public void SetBeardSprite(Sprite sprite, Color32 color)
+    {
+        beardSprite = sprite;
+        beardSpriteRenderer.sprite = sprite;
+        beardSpriteRenderer.color = color;
+    }
 }
