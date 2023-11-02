@@ -297,13 +297,8 @@ public class CharacterCreation : MonoBehaviour
         spriteManager.SetBodySprite(bodyImage.sprite, bodyImage.color);
         spriteManager.SetHairSprite(hairImage.sprite, hairImage.color);
         spriteManager.SetBeardSprite(beardImage.sprite, beardImage.color);
+
+        GetComponent<RectTransform>().localScale = Vector2.zero;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ConfirmCharacter();
-        }
-    }
 }
