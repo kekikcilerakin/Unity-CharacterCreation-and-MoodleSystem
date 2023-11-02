@@ -17,14 +17,13 @@ public class CharacterCreation : MonoBehaviour
     [SerializeField] private Sprite maleGenderIcon;
     [SerializeField] private Sprite femaleGenderIcon;
 
-
     [Header("Hair & Beard")]
     [SerializeField] private Sprite[] hairs;
     [SerializeField] private Sprite[] beards;
 
     [Header("Colors")]
-    private Color[] hairColors;
-    private Color[] skinColors;
+    private Color32[] hairColors;
+    private Color32[] skinColors;
 
     [Header("UI Elements")]
     [SerializeField] private Image headImage;
@@ -43,31 +42,38 @@ public class CharacterCreation : MonoBehaviour
 
     private void Start()
     {
-        Color[] predefinedSkinColors = new Color[]
-        {
-            new Color32(255, 209, 171, 255),
-            new Color32(223, 162, 111, 255),
-            new Color32(179, 114, 61, 255),
-            new Color32(133, 73, 23, 255),
-            new Color32(82, 37, 0, 255),
-            new Color32(59, 45, 52, 255),
-        };
-        skinColors = predefinedSkinColors;
-
-        Color[] predefinedHairColors = new Color[]
-        {
-            new Color32(250, 240, 190, 255), // Blonde
-            new Color(0.6f, 0.6f, 0.6f), // Gray
-            new Color(0.54f, 0.27f, 0.07f), // Brown
-            new Color32(154, 51, 0, 255), // Red
-            new Color(0.28f, 0.23f, 0.23f), // Dark Brown
-            new Color32(79, 26, 0, 255), // Dark Red
-            new Color32(36, 28, 17, 255), // Black
-        };
-        hairColors = predefinedHairColors;
+        PredefineSkinColors();
+        PredefineHairColors();
 
         ResetVisuals();
         PopulateDropdowns();
+    }
+
+    private void PredefineSkinColors()
+    {
+        Color32[] predefinedSkinColors = new Color32[]
+        {
+        new Color32(255, 209, 171, 255),
+        new Color32(223, 162, 111, 255),
+        new Color32(179, 114, 61, 255),
+        new Color32(133, 73, 23, 255),
+        new Color32(82, 37, 0, 255),
+        new Color32(59, 45, 52, 255),
+        };
+        skinColors = predefinedSkinColors;
+    }
+
+    private void PredefineHairColors()
+    {
+        Color32[] predefinedHairColors = new Color32[]
+        {
+        new Color32(250, 240, 190, 255), // Blonde
+        new Color32(0, 0, 0, 255), // Black
+        new Color32(255, 0, 0, 255), // Red
+        new Color32(0, 255, 0, 255), // Green
+        new Color32(0, 0, 255, 255), // Blue
+        };
+        hairColors = predefinedHairColors;
     }
 
     public void SwitchGender()
@@ -85,11 +91,16 @@ public class CharacterCreation : MonoBehaviour
             headImage.sprite = femaleHead;
             bodyImage.sprite = femaleBody;
 
-            beardImage.sprite = beards[0];
-            beardImage.color = hairColors[0];
-            beardTypeDropdown.value = 0;
-            beardColorDropdown.value = 0;
+            ResetBeard();
         }
+    }
+    
+    private void ResetBeard()
+    {
+        beardImage.sprite = beards[0];
+        beardImage.color = hairColors[0];
+        beardTypeDropdown.value = 0;
+        beardColorDropdown.value = 0;
     }
 
     public void RandomizeVisuals()
@@ -160,52 +171,26 @@ public class CharacterCreation : MonoBehaviour
 
     public void PopulateDropdowns()
     {
-        PopulateHairTypeDropdown();
-        PopulateHairColorDropdown();
-        PopulateBeardTypeDropdown();
-        PopulateBeardColorDropdown();
-        PopulateSkinColorDropdown();
-    }
-
-    private void PopulateHairTypeDropdown()
-    {
         PopulateDropdownOptions(hairTypeDropdown, hairs);
-    }
-
-    public void OnHairTypeDropdownValueChanged()
-    {
-        hairImage.sprite = hairs[hairTypeDropdown.value];
-    }
-
-    private void PopulateHairColorDropdown()
-    {
-        hairColorDropdown.ClearOptions();
-
-        List<TMP_Dropdown.OptionData> dropdownOptions = new List<TMP_Dropdown.OptionData>();
-
-        foreach (Color32 hairColor in hairColors)
-        {
-            TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData();
-            option.text = ""; // Leave the text empty
-            option.image = CreateColoredImage(hairColor);
-
-            dropdownOptions.Add(option);
-        }
-
-        hairColorDropdown.AddOptions(dropdownOptions);
-
-        hairImage.color = hairColors[0];
-    }
-
-    public void OnHairColorDropdownValueChanged()
-    {
-        hairImage.color = hairColors[hairColorDropdown.value];
-    }
-
-    private void PopulateBeardTypeDropdown()
-    {
         PopulateDropdownOptions(beardTypeDropdown, beards);
+        PopulateDropdownWithColors(skinColorDropdown, skinColors, null);
+        PopulateDropdownWithColors(hairColorDropdown, hairColors, hairImage);
+        PopulateDropdownWithColors(beardColorDropdown, hairColors, beardImage);
     }
+
+    public void OnSkinColorDropdownValueChanged()
+    {
+        headImage.color = skinColors[skinColorDropdown.value];
+        bodyImage.color = skinColors[skinColorDropdown.value];
+    }
+
+    public void OnHairTypeDropdownValueChanged() => hairImage.sprite = hairs[hairTypeDropdown.value];
+
+    public void OnHairColorDropdownValueChanged() => hairImage.color = hairColors[hairColorDropdown.value];
+
+    public void OnBeardTypeDropdownValueChanged() => beardImage.sprite = beards[beardTypeDropdown.value];
+
+    public void OnBeardColorDropdownValueChanged() => beardImage.color = hairColors[beardColorDropdown.value];
 
     private void PopulateDropdownOptions(TMP_Dropdown dropdown, Sprite[] sprites)
     {
@@ -224,61 +209,27 @@ public class CharacterCreation : MonoBehaviour
         dropdown.value = 0;
     }
 
-    public void OnBeardTypeDropdownValueChanged()
+    private void PopulateDropdownWithColors(TMP_Dropdown dropdown, Color32[] colors, Image targetImage)
     {
-        beardImage.sprite = beards[beardTypeDropdown.value];
-    }
-
-    private void PopulateBeardColorDropdown()
-    {
-        beardColorDropdown.ClearOptions();
+        dropdown.ClearOptions();
 
         List<TMP_Dropdown.OptionData> dropdownOptions = new List<TMP_Dropdown.OptionData>();
 
-        foreach (Color32 beardColor in hairColors)
+        foreach (Color32 color in colors)
         {
             TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData();
             option.text = ""; // Leave the text empty
-            option.image = CreateColoredImage(beardColor);
+            option.image = CreateColoredImage(color);
 
             dropdownOptions.Add(option);
         }
 
-        beardColorDropdown.AddOptions(dropdownOptions);
+        dropdown.AddOptions(dropdownOptions);
 
-        beardImage.color = hairColors[0];
-    }
-
-    public void OnBeardColorDropdownValueChanged()
-    {
-        beardImage.color = hairColors[beardColorDropdown.value];
-    }
-
-    private void PopulateSkinColorDropdown()
-    {
-        skinColorDropdown.ClearOptions();
-
-        List<TMP_Dropdown.OptionData> dropdownOptions = new List<TMP_Dropdown.OptionData>();
-
-        foreach (Color32 skinColor in skinColors)
+        if (targetImage != null)
         {
-            TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData();
-            option.text = ""; // Leave the text empty
-            option.image = CreateColoredImage(skinColor);
-
-            dropdownOptions.Add(option);
+            targetImage.color = colors[0];
         }
-
-        skinColorDropdown.AddOptions(dropdownOptions);
-
-        headImage.color = skinColors[0];
-        bodyImage.color = skinColors[0];
-    }
-
-    public void OnSkinColorDropdownValueChanged()
-    {
-        headImage.color = skinColors[skinColorDropdown.value];
-        bodyImage.color = skinColors[skinColorDropdown.value];
     }
 
     private Sprite CreateColoredImage(Color32 color)
