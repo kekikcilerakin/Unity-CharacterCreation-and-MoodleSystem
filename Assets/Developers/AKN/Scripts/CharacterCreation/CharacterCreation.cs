@@ -95,27 +95,41 @@ public class CharacterCreation : MonoBehaviour
     {
         if (isMale)
         {
-            int randomBeardTypeIndex = Random.Range(0, beards.Length);
-            beardImage.sprite = beards[randomBeardTypeIndex];
-            beardTypeDropdown.value = randomBeardTypeIndex;
-
-            int randomBeardColorIndex = Random.Range(0, hairColors.Length);
-            beardImage.color = hairColors[randomBeardColorIndex];
-            beardColorDropdown.value = randomBeardColorIndex;
+            RandomizeBeard();
         }
 
+        RandomizeHair();
+        RandomizeSkinColor();
+    }
+
+    private void RandomizeBeard()
+    {
+        int randomBeardTypeIndex = Random.Range(0, beards.Length);
+        beardImage.sprite = beards[randomBeardTypeIndex];
+        beardTypeDropdown.value = randomBeardTypeIndex;
+
+        int randomBeardColorIndex = Random.Range(0, hairColors.Length);
+        beardImage.color = hairColors[randomBeardColorIndex];
+        beardColorDropdown.value = randomBeardColorIndex;
+    }
+
+    private void RandomizeHair()
+    {
         int randomHairTypeIndex = Random.Range(0, hairs.Length);
         hairImage.sprite = hairs[randomHairTypeIndex];
         hairTypeDropdown.value = randomHairTypeIndex;
 
+        int randomHairColorIndex = Random.Range(0, hairColors.Length);
+        hairImage.color = hairColors[randomHairColorIndex];
+        hairColorDropdown.value = randomHairColorIndex;
+    }
+
+    private void RandomizeSkinColor()
+    {
         int randomSkinColorIndex = Random.Range(0, skinColors.Length);
         headImage.color = skinColors[randomSkinColorIndex];
         bodyImage.color = skinColors[randomSkinColorIndex];
         skinColorDropdown.value = randomSkinColorIndex;
-
-        int randomHairColorIndex = Random.Range(0, hairColors.Length);
-        hairImage.color = hairColors[randomHairColorIndex];
-        hairColorDropdown.value = randomHairColorIndex;
     }
 
     private void ResetVisuals()
