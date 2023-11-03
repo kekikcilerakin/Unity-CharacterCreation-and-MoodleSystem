@@ -3854,6 +3854,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HungerIcon: {fileID: 21300000, guid: 23facf1ae331e8648a3cd4867c430d00, type: 3}
   ThirstIcon: {fileID: 21300000, guid: 8aa006e003b5c8f458e7503678f852dd, type: 3}
+  BleedIcon: {fileID: 21300000, guid: c002cdf293d077745af27d79323ac9f7, type: 3}
   Backgrounds:
   - {fileID: 21300000, guid: 6bfc099efe92d2348be147b7bbd45b37, type: 3}
   - {fileID: 21300000, guid: ee8bd99b5c743a940a15b359bc8709db, type: 3}
@@ -4163,8 +4164,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1a5926c2dc43884c9ee6051892a85e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hungerLevel: 0
-  thirstLevel: 0
+  hunger: 0
+  thirst: 0
 --- !u!114 &892243874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8103,7 +8104,7 @@ MonoBehaviour:
   bodyImage: {fileID: 1999350025}
   hairImage: {fileID: 152556281}
   beardImage: {fileID: 561368260}
-  genderImage: {fileID: 1835926752}
+  genderIcon: {fileID: 1835926752}
   hairTypeDropdown: {fileID: 1119202391}
   hairColorDropdown: {fileID: 699200276}
   beardColorDropdown: {fileID: 1963889282}

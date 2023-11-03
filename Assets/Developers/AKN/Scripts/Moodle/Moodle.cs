@@ -93,21 +93,48 @@ public class Moodle : MonoBehaviour
 
         if (type == MoodleType.Hunger)
         {
-            UpdateMoodleLevel(PlayerController.Instance.HungerAndThirstController.GetHungerLevel(), 0.70f, 0.45f, 0.25f, 0.15f);
+            UpdateMoodleLevel(PlayerController.Instance.HungerAndThirstController.GetHunger(), 0.70f, 0.45f, 0.25f, 0.15f);
         }
 
         if (type == MoodleType.Thirst)
         {
-            UpdateMoodleLevel(PlayerController.Instance.HungerAndThirstController.GetThirstLevel(), 0.84f, 0.70f, 0.25f, 0.12f);
+            UpdateMoodleLevel(PlayerController.Instance.HungerAndThirstController.GetThirst(), 0.84f, 0.70f, 0.25f, 0.12f);
         }
+
+        ApplyEffect();
     }
 
-    private void UpdateMoodleLevel(float currentLevel, float level4Threshold, float level3Threshold, float level2Threshold, float level1Threshold)
+    private void UpdateMoodleLevel(float currentValue, float level4Threshold, float level3Threshold, float level2Threshold, float level1Threshold)
     {
-        if (currentLevel > level4Threshold) SetLevel(4);
-        else if (currentLevel > level3Threshold) SetLevel(3);
-        else if (currentLevel > level2Threshold) SetLevel(2);
-        else if (currentLevel > level1Threshold) SetLevel(1);
-        else if (currentLevel > 0.00f) SetLevel(0);
+        if (currentValue > level4Threshold) SetLevel(4);
+        else if (currentValue > level3Threshold) SetLevel(3);
+        else if (currentValue > level2Threshold) SetLevel(2);
+        else if (currentValue > level1Threshold) SetLevel(1);
+        else if (currentValue > 0.00f) SetLevel(0);
+    }
+
+    private void ApplyEffect()
+    {
+        if (type == MoodleType.Hunger)
+        {
+            switch (level)
+            {
+                case 1:
+                    PlayerController.Instance.PlayerMovement.ReduceMovementSpeed(0.1f);
+                    break;
+                case 2:
+                    PlayerController.Instance.PlayerMovement.ReduceMovementSpeed(0.3f);
+                    break;
+                case 3:
+                    PlayerController.Instance.PlayerMovement.ReduceMovementSpeed(0.5f);
+                    break;
+                case 4:
+                    PlayerController.Instance.PlayerMovement.ReduceMovementSpeed(0.8f);
+                    break;
+                default:
+                    PlayerController.Instance.PlayerMovement.ReduceMovementSpeed(0.0f);
+                    break;
+            }
+        }
     }
 }

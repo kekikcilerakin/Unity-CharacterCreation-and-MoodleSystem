@@ -4,25 +4,34 @@ public class HungerAndThirstController : MonoBehaviour
 {
     [SerializeField]
     [Range(0.0f, 1.0f)]
-    private float hungerLevel = 0.0f;
+    private float hunger = 0.0f;
 
     [SerializeField]
     [Range(0.0f, 1.0f)]
-    private float thirstLevel = 0.0f;
+    private float thirst = 0.0f;
 
     private void Update()
     {
-        hungerLevel += Time.deltaTime * 0.05f;
-        thirstLevel += Time.deltaTime * 0.04f;
+        hunger += Time.deltaTime * 0.05f;
+        thirst += Time.deltaTime * 0.04f;
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            hunger = 0.0f;
+            thirst = 0.0f;
+        }
+
     }
 
-    public float GetHungerLevel()
+    public float GetHunger()
     {
-        return hungerLevel;
+        return hunger;
     }
 
-    public float GetThirstLevel()
+    public float GetThirst()
     {
-        return thirstLevel;
+        return thirst;
     }
+
+
 }

@@ -26,4 +26,10 @@ public class PlayerMovement : MonoBehaviour
     {
         rb.velocity = movement * currentSpeed;
     }
+
+    public void ReduceMovementSpeed(float multiplier)
+    {
+        currentSpeed -= currentSpeed * multiplier;
+        Debug.Log(currentSpeed);
+    }
 }
