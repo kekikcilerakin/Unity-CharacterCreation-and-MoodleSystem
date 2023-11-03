@@ -1,6 +1,8 @@
 Character Creation and Project Zomboid Style Moodle System
 
-https://github.com/kekikcilerakin/Unity-Mad-AKN/assets/12860030/aa4efc3d-34a6-4d3f-90b2-98c2656f361f
 
-https://github.com/kekikcilerakin/Unity-Mad-AKN/assets/12860030/1e2b0cb6-039e-463e-ad0b-ec50b85d468c
+https://github.com/kekikcilerakin/Unity-Mad-AKN/assets/12860030/d4f0979a-c498-49f6-9d45-5cb3ecd75288
+
+
+https://github.com/kekikcilerakin/Unity-Mad-AKN/assets/12860030/6828d0b3-16bb-48da-af10-f1324a524dd9
 
